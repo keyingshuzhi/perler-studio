@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     app_name: str = "Perler Studio API"
     app_env: str = "development"
     app_debug: bool = False
-    app_version: str = "0.3.0"
+    app_version: str = "0.3.1"
     api_v1_prefix: str = "/api/v1"
     cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"])
 
