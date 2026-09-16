@@ -1,6 +1,6 @@
 # 部署
 
-当前推荐单机部署方式是 Docker Compose：后端和前端各一个容器，`./data` 作为持久化数据卷。前端 Nginx 同源代理 `/api` 和 `/media` 到后端。本仓库的 GitHub Actions 仅发布 `linux/amd64` 镜像。
+当前推荐单机部署方式是 Docker Compose：后端和前端各一个容器，`./data` 作为持久化数据卷。Compose 直接从 GHCR 拉取已发布镜像，不在部署主机编译源码；前端 Nginx 同源代理 `/api` 和 `/media` 到后端。本仓库的 GitHub Actions 发布 `linux/amd64` 与 `linux/arm64` 多架构镜像，拉取时 Docker 会自动选择与主机匹配的架构。
 
 ## Docker Compose
 
@@ -8,8 +8,9 @@
 
 ```bash
 cp .env.example .env
-# 编辑 .env，替换 AUTH_SECRET，并设置 DATA_UID/DATA_GID 为 data/ 目录所有者
-docker compose up --build -d
+# 编辑 .env，替换 AUTH_SECRET，设置 DATA_UID/DATA_GID，并确认 IMAGE_TAG
+docker compose pull
+docker compose up -d
 docker compose ps
 ```
 
@@ -18,6 +19,8 @@ docker compose ps
 - 健康检查：`http://localhost:8000/health`
 
 Compose 默认把后端设为 `APP_ENV=production`，并通过 `${AUTH_SECRET:?...}` 强制要求密钥。仓库提供的 `.env.example` 只是模板；其中的示例密钥不能用于公网环境。
+
+默认 `IMAGE_TAG=0.3.1`，对应 Git 标签 `v0.3.1` 发布的镜像；GHCR 镜像标签不含前导 `v`。每个标签都是同时包含 amd64 与 arm64 的多架构清单，`docker-compose.yml` 不再固定 `platform`，由 Docker 按部署主机架构自动选择；如需强制单架构，可在 compose override 中为该服务显式设置 `platform`。升级时先将 `IMAGE_TAG` 改为目标发布版本，例如 `0.4.0`，再执行 `docker compose pull` 和 `docker compose up -d`。若 GHCR 软件包设为私有，请先执行 `docker login ghcr.io`。
 
 `data/` 是宿主机绑定挂载，不属于镜像；根目录 `.env` 只由 Compose 读取并作为环境变量传给后端，不挂载为文件。后端以非 root 身份运行，部署前用 `stat` 或 `id -u` / `id -g` 核对数据目录所有者，并将对应数值写入 `.env` 的 `DATA_UID` / `DATA_GID`。Compose 禁止自动创建缺失的绑定源目录；但若虚拟机中已经存在同名空目录，仍须人工核对挂载内容。
 
@@ -42,7 +45,8 @@ Compose 默认把后端设为 `APP_ENV=production`，并通过 `${AUTH_SECRET:?.
 
 ```bash
 sh deploy/scripts/backup-data.sh
-docker compose up --build -d
+docker compose pull
+docker compose up -d
 ```
 
 默认备份目录是仓库根目录 `backups/`，也可传入独立挂载盘：
@@ -61,14 +65,14 @@ sh deploy/scripts/backup-data.sh /srv/perler-backups
 
 ## 发布镜像
 
-推送 `v*` Git 标签或手动触发工作流会先运行前后端验证，再发布 `linux/amd64` 镜像：
+推送 `v*` Git 标签或手动触发工作流会先运行前后端验证，再发布 `linux/amd64` 与 `linux/arm64` 镜像：
 
 ```text
 ghcr.io/<owner>/perler-studio-backend:<version>
 ghcr.io/<owner>/perler-studio-frontend:<version>
 ```
 
-仓库必须允许 GitHub Actions 使用 `GITHUB_TOKEN` 写入 Packages。工作流发布完整语义版本、主次版本和提交 SHA 标签；生产部署优先固定完整版本或镜像 digest，避免使用浮动标签。根目录 `docker-compose.yml` 用于从当前源码构建；如要从 GHCR 部署，使用发布的后端和前端镜像替换各服务的 `build` 配置，并保留现有 `environment`、`user` 与 `data` 绑定挂载。
+仓库必须允许 GitHub Actions 使用 `GITHUB_TOKEN` 写入 Packages。工作流发布完整语义版本、主次版本和提交 SHA 标签；生产部署优先固定完整版本或镜像 digest，避免使用浮动标签。根目录 `docker-compose.yml` 已直接引用 GHCR 的前后端镜像，并保留运行时 `environment`、`user` 与 `data` 绑定挂载；部署不需要源码目录中的 Dockerfile、前后端依赖或任何 `.env*` 文件进入镜像。
 
 ## 当前扩展限制
 

@@ -2,7 +2,7 @@
 
 Perler Studio 的 FastAPI 后端，是账户权限、图纸网格、统计、版本、审核和导出的可信数据源。
 
-当前版本为 `0.3.0`，使用本地文件和 SQLite，无需 PostgreSQL、Redis、Celery 或对象存储即可运行。
+当前版本为 `0.3.1`，使用本地文件和 SQLite，无需 PostgreSQL、Redis、Celery 或对象存储即可运行。
 
 Docker 镜像只复制依赖清单和 `app/` 代码，不包含本地 `data/` 或 `.env*`。Compose 在运行时将宿主机 `./data` 绑定到 `/app/data`，并通过环境变量传入配置；后端运行 UID/GID 由 `DATA_UID` / `DATA_GID` 设置。
 
@@ -76,7 +76,7 @@ cp .env.example .env
 | `APP_NAME` | `Perler Studio API` | OpenAPI 标题 |
 | `APP_ENV` | `development` | `production` 会强制检查认证密钥 |
 | `APP_DEBUG` | `false` | FastAPI debug 开关 |
-| `APP_VERSION` | `0.3.0` | API 版本标识 |
+| `APP_VERSION` | `0.3.1` | API 版本标识 |
 | `API_V1_PREFIX` | `/api/v1` | 业务路由前缀 |
 | `DATA_DIR` | `../data` | 文件数据根目录 |
 | `DATABASE_PATH` | `<DATA_DIR>/perler-studio.db` | 可覆盖 SQLite 路径 |

@@ -27,7 +27,8 @@ build:
 	cd frontend && npm run build
 
 up:
-	docker compose up --build -d
+	docker compose pull
+	docker compose up -d
 
 down:
 	docker compose down

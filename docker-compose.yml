@@ -1,12 +1,12 @@
 services:
   backend:
-    build:
-      context: ./backend
+    image: ghcr.io/keyingshuzhi/perler-studio-backend:${IMAGE_TAG:-0.3.1}
+    pull_policy: always
     user: ${DATA_UID:-1000}:${DATA_GID:-1000}
     environment:
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
-      APP_VERSION: ${APP_VERSION:-0.3.0}
+      APP_VERSION: ${APP_VERSION:-0.3.1}
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:8080}
       DATA_DIR: ${DATA_DIR:-/app/data}
       MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-20}
@@ -27,8 +27,8 @@ services:
     restart: unless-stopped
 
   frontend:
-    build:
-      context: ./frontend
+    image: ghcr.io/keyingshuzhi/perler-studio-frontend:${IMAGE_TAG:-0.3.1}
+    pull_policy: always
     depends_on:
       backend:
         condition: service_healthy

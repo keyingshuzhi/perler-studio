@@ -4,7 +4,7 @@
 
 Perler Studio 是一个可运行的前后端分离 Web 应用。创作者可以把照片或插画转换为真实品牌色号组成的拼豆网格，也可以从空白画布、内置模板或短文本开始创作；完成后可管理版本、生成生产计划、分享确认、提交社区审核，并导出制作文件。
 
-当前版本为 `0.3.0`。项目统一使用语义化版本号，不再另设产品能力阶段版本。
+当前版本为 `0.3.1`。项目统一使用语义化版本号，不再另设产品能力阶段版本。
 
 ## 当前能力
 
@@ -28,7 +28,8 @@ Docker Compose 会以生产模式启动后端，因此必须提供独立的 `AUT
 ```bash
 cp .env.example .env
 # 编辑 .env，将 AUTH_SECRET 改为长随机值，并将 DATA_UID/DATA_GID 设置为 data/ 的所有者
-docker compose up --build -d
+docker compose pull
+docker compose up -d
 ```
 
 启动后访问：
@@ -39,7 +40,7 @@ docker compose up --build -d
 
 首次初始化会创建内置管理员 `admin`，初始密码也是 `admin`。第一次登录后必须立即修改密码。生产部署还应使用 HTTPS、限制管理端访问并在反向代理层配置限流。
 
-完整步骤见[本地开发](docs/development.md)与[部署指南](docs/deployment.md)。GitHub Actions 只发布 `linux/amd64` 的 GHCR 镜像，并在推送前重新运行前后端验证。
+完整步骤见[本地开发](docs/development.md)与[部署指南](docs/deployment.md)。GitHub Actions 发布 `linux/amd64` 与 `linux/arm64` 的 GHCR 镜像，并在推送前重新运行前后端验证。
 
 ## 典型工作流
 
@@ -60,7 +61,7 @@ docker compose up --build -d
 | 后端 | Python、FastAPI、Pydantic、Pillow、NumPy、ReportLab |
 | 数据 | SQLite 保存身份、会话、归属和审核；数据卷保存工程 JSON 与媒体文件 |
 | 质量 | Pytest、Ruff、Vitest、vue-tsc、GitHub Actions |
-| 部署 | Docker Compose、Nginx、GHCR `linux/amd64` 镜像 |
+| 部署 | Docker Compose、Nginx、GHCR `linux/amd64` / `linux/arm64` 镜像 |
 
 ## 仓库结构
 
@@ -85,7 +86,8 @@ perler-studio/
 | 变量 | 默认/示例 | 说明 |
 | --- | --- | --- |
 | `APP_ENV` | `development` | Compose 默认覆盖为 `production` |
-| `APP_VERSION` | `0.3.0` | 健康检查和 OpenAPI 中的版本 |
+| `APP_VERSION` | `0.3.1` | 健康检查和 OpenAPI 中的版本 |
+| `IMAGE_TAG` | `0.3.1` | 要拉取的 GHCR 镜像标签；发布标签去掉前导 `v` |
 | `DATA_DIR` | `../data` | 后端目录的相对路径，或绝对路径 |
 | `DATABASE_PATH` | `<DATA_DIR>/perler-studio.db` | SQLite 文件路径 |
 | `DATA_UID/DATA_GID` | `1000/1000` | Compose 后端运行身份，应与宿主机 `data/` 目录所有者一致 |
