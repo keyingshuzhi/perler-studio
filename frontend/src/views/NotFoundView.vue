@@ -1,0 +1,2 @@
+<template><main class="not-found"><p>404</p><h1>这个页面不存在。</h1><RouterLink class="button" to="/">回到首页</RouterLink></main></template>
+<style scoped>.not-found { display: grid; min-height: calc(100vh - 62px); place-content: center; justify-items: center; gap: 10px; text-align: center; }.not-found p { margin: 0; color: #bd513a; font: 700 70px Georgia, serif; }.not-found h1 { margin: 0 0 12px; font: 600 26px Georgia, serif; }</style>
