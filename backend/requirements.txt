@@ -1,0 +1,18 @@
+# Perler Studio 0.3.0 backend runtime dependencies (Python 3.11+)
+fastapi>=0.115,<1.0
+uvicorn[standard]>=0.34,<1.0
+pydantic>=2.10,<3.0
+pydantic-settings>=2.7,<3.0
+python-multipart>=0.0.20,<1.0
+
+# Image conversion and palette matching
+Pillow>=11.0,<13.0
+numpy>=2.0,<3.0
+
+# Vector PDF rendering
+reportlab>=4.2,<5.0
+
+# Quality checks
+pytest>=8.3,<9.0
+httpx>=0.28,<1.0
+ruff>=0.9,<1.0

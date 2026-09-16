@@ -1,0 +1,37 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    user: ${DATA_UID:-1000}:${DATA_GID:-1000}
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+      APP_DEBUG: ${APP_DEBUG:-false}
+      APP_VERSION: ${APP_VERSION:-0.3.0}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173,http://localhost:8080}
+      DATA_DIR: ${DATA_DIR:-/app/data}
+      MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-20}
+      MAX_IMAGE_PIXELS: ${MAX_IMAGE_PIXELS:-50000000}
+      DATABASE_PATH: ${DATABASE_PATH:-/app/data/perler-studio.db}
+      AUTH_SECRET: ${AUTH_SECRET:?请在 .env 中设置一个随机 AUTH_SECRET}
+      AUTH_SESSION_DAYS: ${AUTH_SESSION_DAYS:-30}
+      LEGACY_DATA_OWNER_EMAIL: ${LEGACY_DATA_OWNER_EMAIL:-}
+      INITIAL_ADMIN_EMAILS: ${INITIAL_ADMIN_EMAILS:-}
+    ports:
+      - "8000:8000"
+    volumes:
+      - type: bind
+        source: ./data
+        target: /app/data
+        bind:
+          create_host_path: false
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    restart: unless-stopped

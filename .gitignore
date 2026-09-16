@@ -1,0 +1,90 @@
+# Environment and local secrets
+.env
+.env.*
+backend/.env
+!.env.example
+!**/.env.example
+!frontend/.env.development
+!frontend/.env.production
+
+# Runtime data and backups
+data/**
+!data/**/
+!data/**/.gitkeep
+backups/
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-shm
+*.db-wal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.python-version
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+build/
+site/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# Node, Vite and frontend output
+node_modules/
+dist/
+.vite/
+.vite-temp/
+coverage/
+.npm/
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# Browser and end-to-end test artifacts
+.playwright-cli/
+playwright-report/
+test-results/
+blob-report/
+
+# IDE and editor state
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# Operating-system metadata
+.DS_Store
+**/.DS_Store
+._*
+.AppleDouble
+.LSOverride
+Thumbs.db
+Desktop.ini
+
+# Logs, temporary files and local overrides
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+.cache/
+/tmp/
+/temp/
+docker-compose.override.yml
+compose.override.yaml

@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  color: #172033;
+  background: #f4f6fb;
+  font-family: Manrope, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #172033;
+  --ink-soft: #5e6879;
+  --canvas: #f4f6fb;
+  --surface: #ffffff;
+  --surface-muted: #f8f9fd;
+  --line: #e3e7ef;
+  --line-strong: #cdd4e1;
+  --violet: #6854e8;
+  --violet-dark: #4937c3;
+  --coral: #ee6d5b;
+  --mint: #36b99a;
+  --shadow-sm: 0 5px 16px rgb(30 41 66 / 6%);
+  --shadow-md: 0 18px 46px rgb(35 45 75 / 10%);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--canvas); scroll-behavior: smooth; }
+body { min-width: 320px; min-height: 100vh; margin: 0; background: radial-gradient(circle at 10% -10%, #e9e5ff 0, transparent 28rem), radial-gradient(circle at 90% 0, #dff6f0 0, transparent 25rem), var(--canvas); }
+body::before { position: fixed; z-index: -1; inset: 0; background-image: linear-gradient(rgb(104 84 232 / 3%) 1px, transparent 1px), linear-gradient(90deg, rgb(104 84 232 / 3%) 1px, transparent 1px); background-size: 32px 32px; content: ''; mask-image: linear-gradient(to bottom, #000, transparent 65%); pointer-events: none; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid rgb(104 84 232 / 30%); outline-offset: 2px; }
+a { color: inherit; text-decoration: none; }
+::selection { color: #fff; background: #7059df; }
+
+.button { display: inline-flex; min-height: 42px; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 12px; padding: 9px 15px; background: linear-gradient(135deg, var(--violet), #836bf2); box-shadow: 0 7px 16px rgb(104 84 232 / 24%); color: #fff; font-size: 13px; font-weight: 800; letter-spacing: .01em; transition: transform .18s ease, box-shadow .18s ease, background .18s ease; }
+.button:hover:not(:disabled) { box-shadow: 0 11px 23px rgb(104 84 232 / 29%); transform: translateY(-1px); }
+.button:active:not(:disabled) { box-shadow: 0 3px 9px rgb(104 84 232 / 21%); transform: translateY(0); }
+.button:disabled { cursor: not-allowed; box-shadow: none; opacity: .45; }
+.button--quiet { border-color: var(--line); background: var(--surface); box-shadow: 0 2px 8px rgb(29 37 57 / 5%); color: var(--ink); }
+.button--quiet:hover:not(:disabled) { border-color: #bcb4f6; background: #faf9ff; box-shadow: var(--shadow-sm); }
+.button--danger { border-color: #d94c54; background: #d94c54; box-shadow: 0 7px 16px rgb(217 76 84 / 20%); }
+
+.field { display: grid; gap: 7px; color: #404b5e; font-size: 12px; font-weight: 800; letter-spacing: .01em; }
+.field input, .field select { width: 100%; min-height: 40px; border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; background: var(--surface); color: var(--ink); font-size: 13px; transition: border-color .18s ease, box-shadow .18s ease; }
+.field input:hover, .field select:hover { border-color: #bbc2d1; }
+.field input:focus, .field select:focus { border-color: var(--violet); box-shadow: 0 0 0 3px rgb(104 84 232 / 12%); outline: 0; }
+.card { border: 1px solid rgb(227 231 239 / 90%); border-radius: 18px; background: rgb(255 255 255 / 92%); box-shadow: var(--shadow-sm); backdrop-filter: blur(12px); }
+.muted { color: var(--ink-soft); }
+.eyebrow { margin: 0; color: var(--violet); font-family: "DM Mono", monospace; font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 640px) { .button { min-height: 40px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; } }
